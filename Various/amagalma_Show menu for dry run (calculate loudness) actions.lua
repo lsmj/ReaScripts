@@ -1,6 +1,6 @@
 -- @description Show menu for dry run (calculate loudness) actions
 -- @author amagalma
--- @version 1.02
+-- @version 1.03
 -- @changelog Added option to calculate for Selected Items
 -- @link https://forum.cockos.com/showthread.php?t=239556
 -- @screenshot https://i.ibb.co/9w5VJwZ/dry-run-menu.gif
@@ -38,12 +38,14 @@ for i = 1, #t do
   menu = menu .. t[i][1] .. "|"
 end
 local title = "hidden " .. reaper.genGuid()
-gfx.init( title, 0, 0, 0, 0, 0 )
+-- Modal position fixed on multiple monitors on macOS >=Sonoma
+local mouse_x, mouse_y = reaper.GetMousePosition()
+gfx.init( title, 0, 0, 0, mouse_x, mouse_y )
 local hwnd = reaper.JS_Window_Find( title, true )
 if hwnd then
   reaper.JS_Window_Show( hwnd, "HIDE" )
 end
-gfx.x, gfx.y = gfx.mouse_x-52, gfx.mouse_y-70
+-- gfx.x, gfx.y = gfx.mouse_x-52, gfx.mouse_y-70
 local selection = gfx.showmenu(menu)
 gfx.quit()
 
